@@ -17,8 +17,6 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-extern SettingsBackend get_key_file_backend(string fname, string group);
-
 public class MWPSettings : GLib.Object
 {
     public Settings settings {get; private set;}
@@ -111,8 +109,8 @@ public class MWPSettings : GLib.Object
         {
             string uc =  Environment.get_user_config_dir();
             string kfile = GLib.Path.build_filename(uc,"mwp", "mwp.ini");
-            MWPLog.message("Using %s for settings\n", kfile);
-            SettingsBackend kbe = get_key_file_backend(kfile, kgroup);
+            MWPLog.message("Using keyfile %s for settings\n", kfile);
+            SettingsBackend kbe = MwpGSettingsKeyFile.set_keyfile(kfile, "mwp-wsl");
             settings = new Settings.with_backend(sname, kbe);
         }
         else

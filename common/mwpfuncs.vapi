@@ -99,3 +99,10 @@ namespace Tc
     [CCode (cname="tgetstr")]
     unowned string tgetstr(char *id, char **buf);
 }
+
+[CCode (cheader_filename = "gio/gio.h,gskf.h")]
+namespace MwpGSettingsKeyFile
+{
+    [CCode (cname = "get_key_file_backend")]
+    public GLib.SettingsBackend set_keyfile(string fname, string group);
+}
