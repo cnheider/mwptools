@@ -120,7 +120,7 @@ public class MWPlanner : GLib.Object {
                 Posix.exit(255);
             }
 
-            conf = new MWPSettings();
+            conf = new MWPSettings(MWSerial.use_keyfile);
             conf.read_settings();
             baud = (int)conf.baudrate;
             builder.connect_signals (null);

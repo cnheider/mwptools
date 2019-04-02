@@ -124,6 +124,7 @@ public class AreaPlanner : GLib.Object {
     private Mission ms;
     private uint32 move_time;
     private MwpIF? proxy = null;
+    private static bool use_keyfile = false;
 
     private enum MS_Column {
         ID,
@@ -134,6 +135,11 @@ public class AreaPlanner : GLib.Object {
     private const string DELIMS="\t|;:,";
     private const int MAP_WD = 800;
     private const int MAP_HT = 600;
+
+    const OptionEntry[] options = {
+        { "use-keyfile-settings", 0, 0, OptionArg.NONE, out use_keyfile, "use a keyfile for gsettings/dconf (for WSL)", null},
+        {null}
+    };
 
     private void set_menu_state(string action, bool state)
     {
@@ -193,7 +199,7 @@ public class AreaPlanner : GLib.Object {
             Posix.exit(255);
         }
 
-        conf = new MWPSettings();
+        conf = new MWPSettings(use_keyfile);
         conf.read_settings();
         builder.connect_signals (null);
 
@@ -1098,6 +1104,20 @@ public class AreaPlanner : GLib.Object {
     {
         if (GtkClutter.init (ref args) != InitError.SUCCESS)
             return 1;
+
+        try {
+            var opt = new OptionContext("");
+            opt.set_help_enabled(true);
+            opt.add_main_entries(options, null);
+            opt.parse(ref args);
+        }
+        catch (OptionError e) {
+            stderr.printf("Error: %s\n", e.message);
+            stderr.printf("Run '%s --help' to see a full list of available "+
+                          "options\n", args[0]);
+            return 1;
+        }
+
         AreaPlanner app = new AreaPlanner(args.length == 1 ? null : args[1]);
         app.run ();
         return 0;

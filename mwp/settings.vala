@@ -17,12 +17,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
+extern Settings use_key_file(string fname, string schema, string path, string group);
 
 public class MWPSettings : GLib.Object
 {
     public Settings settings {get; private set;}
-    private const string sname = "org.mwptools.planner";
-    private SettingsSchema schema;
+
     public double latitude {get; set; default=0.0;}
     public double longitude {get; set; default=0.0;}
     public uint loiter {get; set; default=30;}
@@ -102,20 +102,19 @@ public class MWPSettings : GLib.Object
     public int speak_amps {get; set; default=0;}
     public signal void settings_update (string s);
 
-    public MWPSettings()
-    {
-        string?[] devs;
-        devs=null;
-        var uc = Environment.get_user_data_dir();
-        uc += "/glib-2.0/schemas/";
-        try
-        {
-            SettingsSchemaSource sss = new SettingsSchemaSource.from_directory (uc, null, false);
-            schema = sss.lookup (sname, false);
-        } catch {}
+    private const string sname = "org.mwptools.planner";
+    private const string kpath = "/org/mwptools/planner/";
+    private const string kgroup = "mwp-wsl";
 
-        if (schema != null)
-            settings = new Settings.full (schema, null, null);
+    public MWPSettings(bool use_keyfile = false)
+    {
+        if(use_keyfile)
+        {
+            string uc =  Environment.get_user_config_dir();
+            string kfile = GLib.Path.build_filename(uc,"mwp", "mwp.ini");
+            MWPLog.message("Using %s for settings\n", kfile);
+            settings = use_key_file(kfile, sname, kpath, kgroup);
+        }
         else
             settings =  new Settings (sname);
 

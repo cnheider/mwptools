@@ -71,6 +71,7 @@ public class MWSerial : Object
     public static bool pass = false;
     public static bool galileo = false;
     public static int urate = 5;
+    public static bool use_keyfile = false;
 
     const OptionEntry[] options = {
         { "device", 'd', 0, OptionArg.STRING, out devname, "device name", "/dev/ttyUSB0"},
@@ -84,6 +85,7 @@ public class MWSerial : Object
         { "slow", 's', 0, OptionArg.NONE, out slow, "slower initialisation", null},
         { "pass", 'p', 0, OptionArg.NONE, out pass, "cf gps passthrough", null},
         { "galileo", 'g', 0, OptionArg.NONE, out galileo, "enable Galileo", null},
+        { "use-keyfile-settings", 0, 0, OptionArg.NONE, out use_keyfile, "use a keyfile for gsettings/dconf (for WSL)", null},
         {null}
     };
 

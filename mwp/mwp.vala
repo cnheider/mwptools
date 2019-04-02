@@ -417,6 +417,7 @@ public class MWPlanner : Gtk.Application {
     private static string llstr=null;
     private static string layfile=null;
     private static bool asroot = false;
+    private static bool use_keyfile = false;
 
     private MWChooser.MWVAR mwvar=MWChooser.MWVAR.AUTO;
     private uint8 vwarn1;
@@ -887,6 +888,7 @@ public class MWPlanner : Gtk.Application {
         { "voice-command", 0, 0, OptionArg.STRING, out exvox, "External speech command", "command string"},
         { "version", 'v', 0, OptionArg.NONE, out show_vers, "show version", null},
         { "wayland", 0, 0, OptionArg.NONE, out use_wayland, "force wayland (if available)", null},
+        { "use-keyfile-settings", 0, 0, OptionArg.NONE, out use_keyfile, "use a keyfile for gsettings/dconf (for WSL)", null},
         { "really-really-run-as-root", 0, 0, OptionArg.NONE, out asroot, "no reason to ever use this", null},
         { "forward-to", 0, 0, OptionArg.STRING, out forward_device, "forward telemetry to", "device-name"},
         { "smartport", 0, 0, OptionArg.STRING, out sport_device, "smartport device", "device-name"},
@@ -1012,7 +1014,7 @@ public class MWPlanner : Gtk.Application {
 
         hwstatus[0] = 1; // Assume OK
 
-        conf = new MWPSettings();
+        conf = new MWPSettings(use_keyfile);
         conf.read_settings();
 
         {

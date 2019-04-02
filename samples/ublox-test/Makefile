@@ -14,7 +14,7 @@ COMMOND=../../common
 MWPD=../../mwp
 
 VAPI= --vapidir $(COMMOND)
-COMMONC= $(COMMOND)/mwplog.vala $(COMMOND)/cserial.c
+COMMONC= $(COMMOND)/mwplog.vala $(COMMOND)/cserial.c $(COMMOND)/gskf.c
 OPTS+= -X -I$(COMMOND) $(VAPI)
 
 ublox-cli: $(CLISRC)
@@ -27,7 +27,8 @@ ublox-resources.c: ublox.gresources.xml
 SRCS= ublox-test.vala ublox-io.vala ublox.vapi ublox-resources.c
 
 COMMONM = $(COMMOND)/cserial.c $(MWPD)/settings.vala $(MWPD)/mapsources.vala \
-	$(COMMOND)/utils.vala  $(COMMOND)/geocalc.vala $(COMMOND)/mwplog.vala
+	$(COMMOND)/utils.vala  $(COMMOND)/geocalc.vala $(COMMOND)/mwplog.vala \
+	$(COMMOND)/gskf.c
 
 PKGS= --pkg gtk+-3.0 --pkg atk --pkg clutter-1.0 --pkg champlain-gtk-0.12 \
 	--pkg champlain-0.12 --pkg gio-2.0 --pkg posix --pkg clutter-gtk-1.0 \
