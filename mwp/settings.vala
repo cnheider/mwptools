@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 
-extern Settings use_key_file(string fname, string schema, string path, string group);
+extern SettingsBackend get_key_file_backend(string fname, string group);
 
 public class MWPSettings : GLib.Object
 {
@@ -103,7 +103,6 @@ public class MWPSettings : GLib.Object
     public signal void settings_update (string s);
 
     private const string sname = "org.mwptools.planner";
-    private const string kpath = "/org/mwptools/planner/";
     private const string kgroup = "mwp-wsl";
 
     public MWPSettings(bool use_keyfile = false)
@@ -113,7 +112,8 @@ public class MWPSettings : GLib.Object
             string uc =  Environment.get_user_config_dir();
             string kfile = GLib.Path.build_filename(uc,"mwp", "mwp.ini");
             MWPLog.message("Using %s for settings\n", kfile);
-            settings = use_key_file(kfile, sname, kpath, kgroup);
+            SettingsBackend kbe = get_key_file_backend(kfile, kgroup);
+            settings = new Settings.with_backend(sname, kbe);
         }
         else
             settings =  new Settings (sname);
