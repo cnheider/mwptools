@@ -61,6 +61,10 @@ _mwp_complete()
       return 0
       ;;
 
+    '--use-keyfile-settings')
+      return 0
+      ;;
+
     '-h'|'--help'|'-V'|'--version')
       return 0
       ;;
@@ -102,7 +106,8 @@ _mwp_complete()
 	--perma-warn
 	--smartport
 	--fsmenu
-	--kmlfile"
+	--kmlfile
+	--use-keyfile-settings"
 
   COMPREPLY=( $(compgen -W "${OPTS[*]}" -- $cur) )
   return 0
